@@ -1,0 +1,21 @@
+[tool]
+    [tool.mypy]
+    explicit_package_bases = true
+
+    [[tool.mypy.overrides]]
+    module = [
+        'scapy.*',
+        'pytest_embedded.*',
+        'pexpect.*',
+    ]
+    ignore_missing_imports = true
+
+    [tool.ruff]
+    extend-exclude                 = []
+    format.docstring-code-format   = true
+    format.quote-style             = "single"
+    line-length                    = 160
+    lint.exclude                   = ["tests/**/*"]
+    lint.isort.force-single-line   = true
+    lint.isort.lines-between-types = 1
+    lint.select                    = ["B", "C4", "C901", "E", "F", "I", "N", "PL", "S", "UP", "W"]

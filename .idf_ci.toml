@@ -1,0 +1,45 @@
+[gitlab.artifacts.native]
+build_job_filepatterns = [
+    "**/build*/*.bin",
+    "**/build*/flasher_args.json",
+    "**/build*/config/sdkconfig.json",
+    "**/build*/bootloader/*.bin",
+    "**/build*/partition_table/*.bin",
+    "**/build*/size.json",
+    "**/build*/project_description.json",
+    "**/build*/build.log",
+]
+
+[gitlab.build_pipeline]
+job_template_jinja = """
+{{ settings.gitlab.build_pipeline.job_template_name }}:
+  stage: "{{ settings.gitlab.build_pipeline.job_stage }}"
+  tags: {{ settings.gitlab.build_pipeline.job_tags }}
+  image: "{{ settings.gitlab.build_pipeline.job_image }}"
+  timeout: "1h"
+  artifacts:
+    paths:
+    {%- for path in settings.gitlab.artifacts.native.build_job_filepatterns %}
+      - "{{ path }}"
+    {%- endfor %}
+    expire_in: "1 week"
+    when: "always"
+  before_script:
+    - CONSTRAINT_FILE="$(ls -1 ${IDF_TOOLS_PATH}/espidf.constraints.v*.txt 2>/dev/null | tail -1)"
+    - test -f $CONSTRAINT_FILE
+    - pip install -U 'idf-ci>=1.2.2,<2' -c ${CONSTRAINT_FILE}
+    - pip install -r .ci/requirements.txt
+  script:
+    - python tools/overwrite_component_path.py . .
+    - idf-ci build run
+      --parallel-count ${CI_NODE_TOTAL:-1}
+      --parallel-index ${CI_NODE_INDEX:-1}
+
+"""
+runs_per_job = 20
+
+# Target-test images do not ship ptp4l. linuxptp provides it for the PTP example test.
+[gitlab.test_pipeline]
+job_before_script_extra = [
+    "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends linuxptp",
+]

@@ -1,0 +1,17 @@
+
+version: 0.0.0
+license: Apache-2.0
+description: IEEE 1588-2008 Precision Time Protocol (PTP) daemon for ESP-IDF
+url: https://github.com/espressif/esp-ptp/tree/main/esp_ptp
+repository: https://github.com/espressif/esp-ptp.git
+issues: https://github.com/espressif/esp-ptp/issues
+targets:
+  - esp32p4
+  - esp32s31
+dependencies:
+  idf: '>=6.1'
+examples:
+  - path: ../examples/ptp
+files:
+  exclude:
+    - '**/.build-test-rules.yml'

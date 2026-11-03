@@ -1,0 +1,4 @@
+[codespell]
+skip = build,*.drawio,*.jpg
+ignore-words-list = emac,ptpd,nuttx
+write-changes = true

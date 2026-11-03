@@ -1,0 +1,6 @@
+# Build test rules for PTP examples
+# Used by idf-build-apps to determine which examples to build and test
+
+examples/ptp:
+  enable:
+    - if: IDF_TARGET in ["esp32p4", "esp32s31"]

@@ -1,0 +1,22 @@
+# Main Gitlab CI configuration for esp-ptp
+# This file orchestrates all CI/CD pipelines
+
+# Define stages
+stages:
+  - pre_check
+  - build
+  - test
+
+# Include CI jobs
+include:
+  - local: '.gitlab/ci/pre-check.yml'
+  - local: '.gitlab/ci/build.yml'
+  - local: '.gitlab/ci/prebuild_report.yml'
+
+variables:
+  FORCE_COLOR: "1"
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

@@ -1,0 +1,19 @@
+{
+    "include-component-in-tag": true,
+    "separate-pull-requests": true,
+    "include-v-in-tag": true,
+    "tag-separator": "@",
+    "packages": {
+        "esp_ptp": {
+          "component": "esp_ptp",
+          "release-type": "go",
+          "extra-files": [
+            {
+              "type": "yaml",
+              "path": "idf_component.yml",
+              "jsonpath": "$.version"
+            }
+          ]
+        }
+    }
+}

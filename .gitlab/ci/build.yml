@@ -1,0 +1,24 @@
+########################################################
+# Build PTP Repo Apps Dynamic Pipeline
+########################################################
+
+# Note: No need to run build and test on the default branch since we use FastForward
+# merge strategy and so each merge request is tested and then merged onto top of main.
+
+include:
+  - component: $CI_SERVER_FQDN/ci/actions/idf-dynamic-pipeline/ci-component@main
+    rules:
+      - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    inputs:
+      build-job-image: "espressif/idf:latest"
+      test-job-image: "$CI_REGISTRY/ci/images/idf-v6.2-target-test:1"
+      build-job-tags: ["brew", "build"]
+      job-suffix: ":idf-latest"
+  - component: $CI_SERVER_FQDN/ci/actions/idf-dynamic-pipeline/ci-component@main
+    rules:
+      - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    inputs:
+      build-job-image: "espressif/idf:release-v6.1"
+      test-job-image: "$CI_REGISTRY/ci/images/idf-v6.1-target-test:1"
+      build-job-tags: ["brew", "build"]
+      job-suffix: ":idf-v6.1"
