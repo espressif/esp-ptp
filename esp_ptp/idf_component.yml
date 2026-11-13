@@ -1,5 +1,4 @@
-
-version: 0.0.0
+version: 0.1.0
 license: Apache-2.0
 description: IEEE 1588-2008 Precision Time Protocol (PTP) daemon for ESP-IDF
 url: https://github.com/espressif/esp-ptp/tree/main/esp_ptp
